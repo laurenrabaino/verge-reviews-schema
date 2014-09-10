@@ -1,0 +1,127 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+     <meta name="robots" content="nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+               <script src="jquery.js"></script>
+
+    <title>schema generator</title>
+  </head>
+  <body>
+    
+    <div class="row page-title" data-magellan-expedition="fixed">
+      <div class="large-12 columns">
+        <h1>schema generator</h1>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="large-12 columns">
+        <div class="panel">
+          <h3>fill in <a href="https://docs.google.com/spreadsheet/pub?key=0Audl93NY80BvdFh6SndUaWpKU1dIU054X0lmcndNdEE&output=html"target="_blank">this spreadsheet</a> then paste the code below into your review.</h3><br/>
+          <div class="row">
+              <div id="basics-content"></div>
+               <script id="basics" type="text/x-handlebars-template">
+               <div class="large-4 medium-4 columns">
+                 <text area style="width:50%;border:1px solid #ccc;padding:30px;display:block;font-family:courier;">
+
+                    &lt;script type="application/ld+json"&gt;
+                    {<br/>
+                     &nbsp;"@context" : "http://schema.org",<br/>
+                     &nbsp;"@type" : "Review",<br/>
+                     &nbsp;"author" : {<br/>
+                       &nbsp; &nbsp;"@type" : "Person",<br/>
+                       &nbsp;&nbsp;"name" : "{{authorname}}",<br/>
+                       &nbsp;&nbsp;"sameAs" : "{{author_googleplus_url}}"
+                      },<br/>
+                      "datePublished" : "{{publishdate}}",<br/>
+                      "description" : "{{description}}",<br/>
+                      "itemReviewed" : {<br/>
+                       &nbsp;&nbsp;"@type" : "Movie",<br/>
+                       &nbsp;&nbsp;"name" : "{{moviename}}",<br/>
+                       &nbsp;&nbsp;"sameAs" : "{{imdblink}}",<br/>
+                       &nbsp;&nbsp;"datePublished" : "{{moviepublishdate}}",<br/>
+                       &nbsp;&nbsp;"director" : {<br/>
+                        &nbsp;&nbsp;&nbsp;"@type" : "Person",<br/>
+                        &nbsp;&nbsp;&nbsp;"name" : "{{directorname}}",<br/>
+                        &nbsp;&nbsp;&nbsp;"sameAs" : "{{directorurl}}"<br/>
+                        },<br/>
+                        "actor" : [<br/>
+                         &nbsp;&nbsp;{<br/>
+                          &nbsp;&nbsp;&nbsp;"@type" : "Person",<br/>
+                          &nbsp;&nbsp;&nbsp;"name" : "{{actorname}}",<br/>
+                          &nbsp;&nbsp;&nbsp;"sameAs" : "{{actorurl}}"<br/>
+                        &nbsp;&nbsp;},<br/>
+                        &nbsp;&nbsp;{<br/>
+                          &nbsp;&nbsp;&nbsp;"@type" : "Person",<br/>
+                          &nbsp;&nbsp;&nbsp;"name" : "{{actorname2}}",<br/>
+                          &nbsp;&nbsp;&nbsp;"sameAs" : "{{actorurl2}}"<br/>
+                        &nbsp;&nbsp;},<br/>
+                       &nbsp;]<br/>
+                      },<br/>
+                      "publisher" : {<br/>
+                      &nbsp;&nbsp;"@type" : "Organization",<br/>
+                      &nbsp;&nbsp;"name" : "The Verge",<br/>
+                      &nbsp;&nbsp;"sameAs" : "http://theverge.com"<br/>
+                      },<br/>
+                      &nbsp;"reviewRating" : {<br/>
+                      &nbsp;"@type" : "Rating",<br/>
+                      &nbsp;"worstRating" : 1,<br/>
+                      &nbsp; "bestRating" : 5,<br/>
+                      &nbsp;"ratingValue" : {{ratingvalue}}<br/>
+                      },<br/>
+                      &nbsp;"url" : "{{articleurl}}"<br/>
+                    }<br/>
+                    &lt;/script&gt;
+
+                 </text>
+                </div>
+              </script>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+        
+        <hr />
+
+        <script type="text/javascript">
+             var public_spreadsheet_url = " https://docs.google.com/spreadsheet/pub?key=0Audl93NY80BvdFh6SndUaWpKU1dIU054X0lmcndNdEE&output=html";
+
+
+             $(document).ready( function() {
+
+               Tabletop.init( { key: public_spreadsheet_url,
+                                callback: showInfo,
+                                parseNumbers: true } );
+             });
+               
+             function showInfo(data, tabletop) {
+               
+               var source   = $("#basics").html();
+               var template = Handlebars.compile(source);
+
+               var source2   = $("#actors").html();
+               var template2 = Handlebars.compile(source2);
+
+               $.each( tabletop.sheets("basics").all(), function(i, editapps) {
+                 var html = template(editapps);
+                 $("#basics-content").append(html);
+               });
+
+               $.each( tabletop.sheets("actors").all(), function(i, editapps2) {
+                 var html = template2(editapps2);
+                 $("#actors-content").append(html);
+               });
+
+
+             }
+            
+           </script>
+           <script src="tabletop.js"></script>
+           <script src="handlebars.js"></script>
+          
+
+  </body>
+</html>
